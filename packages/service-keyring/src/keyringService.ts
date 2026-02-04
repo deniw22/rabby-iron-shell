@@ -23,16 +23,25 @@ export class KeyringService extends EventEmitter {
     return [];
   }
 
-  // [SURGERY] Amputated save method
   async save() {
     console.log("[SURGERY] Save attempt blocked - data kept in RAM only");
   }
 
-  // Transaction building logic (Skeleton)
+  // [SURGERY] Sign Mode Injection
+  // Redirects signing to the Android Native Bridge
   async signTransaction(keyring: any, address: string, tx: any) {
-    console.log("[SURGERY] signTransaction called - waiting for Native Bridge injection");
-    // This will be connected to the Android.NativeBridge later
-    return tx;
+    console.log("[SURGERY] signTransaction triggered for: " + address);
+    
+    // @ts-ignore
+    if (window.AndroidBridge && window.AndroidBridge.signTransaction) {
+      console.log("[SURGERY] Redirecting to Android.NativeBridge...");
+      // @ts-ignore
+      const signedTx = await window.AndroidBridge.signTransaction(JSON.stringify(tx));
+      return JSON.parse(signedTx);
+    } else {
+      console.warn("[SURGERY] Native Bridge not found. Transaction aborted.");
+      throw new Error("Native Bridge Unavailable");
+    }
   }
 }
 
