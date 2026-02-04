@@ -1,0 +1,11 @@
+{
+  "name": "@rabby-wallet/service-keyring",
+  "version": "1.0.0",
+  "description": "Amputated Stateless Keyring Service",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "events": "^3.3.0",
+    "lodash": "^4.17.21"
+  }
+}
